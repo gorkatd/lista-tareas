@@ -6,7 +6,7 @@
         <div v-for="tarea in orderBy(tareas, 'createdOn') " :key="tarea.id"
             :class="['alert', tarea.completed ? 'alert-success' : 'alert-primary', 'alert-dismissible', 'fade', 'show']">
           <div class="d-flex justify-content-between">
-            <div> 
+            <div :style="{ 'text-decoration': estiloTarea(tarea.completed) }" > 
               {{tarea.nombre}}
             </div>
           
@@ -29,7 +29,7 @@
 
 <script>
 import NuevaTarea from './NuevaTarea.vue'
-import {mapState, mapActions} from 'vuex';
+import {mapState} from 'vuex';
 import Vue2Filters from 'vue2-filters'
 
 
@@ -38,34 +38,49 @@ export default {
   props: {
     title: String
   },
+
+  data() {
+    return{
+      tareas: [],
+
+    }
+  },
   components: {
     NuevaTarea
   },
   mixins: [Vue2Filters.mixin],
   computed: {
-    ...mapState({
-      tareas: state => state.tareas.tareas
-    }),
+    ...mapState['db'],
     tareasOrdenadas(){
       return _.orderBy(this.tareas, 'createdOn');
     }
   },
   created () {
     this.$store.state.db.collection('tareas').onSnapshot(elem => {
-        this.$store.commit('tareas/VACIA_TAREAS')
+        this.tareas = []
         elem.docs.forEach(doc => {
-          this.$store.commit('tareas/AÑADE_TAREA', {id: doc.id, data: doc.data()})
+          this.tareas.push({id: doc.id, ...doc.data()});
         });
     })
   },
   methods: {
+    estiloTarea(completed){
+      return completed ? 'line-through' : 'none';
+    },
     borrar(idTarea){
       console.log("Borrar : " + idTarea);
-      this.$store.dispatch('tareas/borraTarea', idTarea)
+      this.$store.state.db.collection('tareas').doc(idTarea).delete()
+      .then(function(){
+        console.log("Documento borrado: " + idTarea);
+       })
+      .catch(function(error){
+        console.log("Error borrando documento: " + idTarea );
+        console.log(error);
+      })
     },
 
     cambiarEstado(tarea){
-      this.$store.dispatch('tareas/cambiarEstado', tarea)
+      this.$store.state.db.collection('tareas').doc(tarea.id).set({completed: !tarea.completed}, {merge:true}); 
     }
   }
 }

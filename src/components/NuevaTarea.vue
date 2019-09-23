@@ -16,22 +16,32 @@
 
 
 // <script>
-import {mapState, mapActions} from 'vuex';
+import {mapState} from 'vuex';
 
 export default {
   name: 'nueva-tarea',
+  
   data(){
-    return {
-      nuevaTarea: ""
-    }
-    
+      return{
+        nuevaTarea: ""
+      }
+  },
+
+  computed:{
+    ...mapState['db']
   },
 
   methods:{
-      ...mapActions(['guardarTarea']),
       guardar(){
         if (this.nuevaTarea != ""){
-          this.$store.dispatch('tareas/guardarTarea', this.nuevaTarea)
+          this.$store.state.db.collection('tareas').add({nombre: this.nuevaTarea, completed:false, createdOn: new Date()})
+          .then(function(docRef) {
+              console.log("Document written with ID: ", docRef.id);
+          })
+          .catch(function(error) {
+              console.error("Error adding document: ", error);
+          });      
+
           this.nuevaTarea="";  
         }
         
