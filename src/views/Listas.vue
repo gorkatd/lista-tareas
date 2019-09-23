@@ -1,7 +1,9 @@
 <template>
   <div id="app">
-    <router-view></router-view>
-    
+    <div class="container bg-light p-2">
+    </div>
+      <h1>Listas</h1>
+      <button class="btn btn-primary" @click="createList()"> Nueva Lista </button>
   </div>
 </template>
 
@@ -9,12 +11,18 @@
 
 <script>
 
+
 export default {
-  name: 'app',
+  name: 'Listas',
   components: {
   },
    created () {
 
+  },
+  methods:{
+    createList(){
+      console.log("createList");
+    }
   }
 }
 </script>

@@ -1,6 +1,8 @@
 <template>
   <div id="app">
-    <router-view></router-view>
+    <div class="container bg-light p-2">
+      <Tareas></Tareas>
+    </div>
     
   </div>
 </template>
@@ -8,10 +10,13 @@
 
 
 <script>
+import Tareas from '../components/Tareas.vue'
+
 
 export default {
-  name: 'app',
+  name: 'Listas',
   components: {
+    Tareas
   },
    created () {
 

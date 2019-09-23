@@ -11,6 +11,30 @@
     <noscript>
       <strong>We're sorry but lista-tareas doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-firestore.js"></script>
+    <script src="https://unpkg.com/vue-firestore"></script>
+
+
+    <script>        
+      // Firebase config.
+      const firebaseConfig = {
+        apiKey: "AIzaSyDxSbUEqerP3_hirhtll-CNYuXgD4DckSk",
+        authDomain: "prueba-gorkatd.firebaseapp.com",
+        databaseURL: "https://prueba-gorkatd.firebaseio.com",
+        projectId: "prueba-gorkatd",
+        storageBucket: "prueba-gorkatd.appspot.com",
+        messagingSenderId: "317518955859",
+        appId: "1:317518955859:web:a34941b1cabcb408034da6"
+          }
+     
+      // Initialize Firebase.
+      firebase.initializeApp(firebaseConfig);
+    </script> 
+
+
+
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
