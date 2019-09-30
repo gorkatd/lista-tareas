@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="container bg-light p-2">
-      <Tareas></Tareas>
+      <Tareas :title="listName"></Tareas>
     </div>
     
   </div>
@@ -11,15 +11,22 @@
 
 <script>
 import Tareas from '../components/Tareas.vue'
+import Vue from 'vue'
+import VueRouter from 'vue-router';
 
+Vue.use(VueRouter)
 
 export default {
-  name: 'Listas',
+  name: 'Details',
   components: {
     Tareas
   },
    created () {
-
+  },
+  computed:{
+    listName(){
+      return this.$route.params.listName;
+    }
   }
 }
 </script>

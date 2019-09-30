@@ -3,7 +3,8 @@
     <div class="container bg-light p-2">
     </div>
       <h1>Listas</h1>
-      <button class="btn btn-primary" @click="createList()"> Nueva Lista </button>
+      <listado-listas></listado-listas>
+      <!-- <button class="btn btn-primary" @click="createList()"> Nueva Lista </button> -->
   </div>
 </template>
 
@@ -11,10 +12,12 @@
 
 <script>
 
+import ListadoListas from '../components/ListadoListas.vue'
 
 export default {
   name: 'Listas',
   components: {
+    ListadoListas
   },
    created () {
 

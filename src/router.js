@@ -11,12 +11,12 @@ export default new VueRouter({
         {
             path: '/',
             name: 'lists',
-            component: () => import(/* webpackChunkName: "about" */ './views/Details.vue')
+            component: () => import(/* webpackChunkName: "about" */ './views/Listas.vue')
         },
         {
-            path: '/',
+            path: '/details/:listName',
             name: 'details',
-            component: () => import(/* webpackChunkName: "about" */ './views/Listas.vue')
+            component: () => import(/* webpackChunkName: "about" */ './views/Details.vue')
         }
     ]
 });

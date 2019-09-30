@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>{{title}}</h1>
-    <nueva-tarea></nueva-tarea>
+    <nueva-tarea :list="title"></nueva-tarea>
     <div class="container mt-3">
         <div v-for="tarea in orderBy(tareas, 'createdOn') " :key="tarea.id"
             :class="['alert', tarea.completed ? 'alert-success' : 'alert-primary', 'alert-dismissible', 'fade', 'show']">
@@ -56,7 +56,7 @@ export default {
     }
   },
   created () {
-    this.$store.state.db.collection('tareas').onSnapshot(elem => {
+    this.$store.state.db.collection('tareas').where("list" ,"==", this.title).onSnapshot(elem => {
         this.tareas = []
         elem.docs.forEach(doc => {
           this.tareas.push({id: doc.id, ...doc.data()});

@@ -20,6 +20,9 @@ import {mapState} from 'vuex';
 
 export default {
   name: 'nueva-tarea',
+  props:{
+    list: String
+  },
   
   data(){
       return{
@@ -34,7 +37,8 @@ export default {
   methods:{
       guardar(){
         if (this.nuevaTarea != ""){
-          this.$store.state.db.collection('tareas').add({nombre: this.nuevaTarea, completed:false, createdOn: new Date()})
+          this.$store.state.db.collection('tareas')
+          .add({nombre: this.nuevaTarea, completed:false, list: this.list, createdOn: new Date()})
           .then(function(docRef) {
               console.log("Document written with ID: ", docRef.id);
           })
