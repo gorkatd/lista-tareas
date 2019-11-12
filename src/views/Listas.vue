@@ -1,10 +1,7 @@
 <template>
-  <div id="app">
-    <div class="container bg-light p-2">
-    </div>
-      <h1>Listas</h1>
-      <listado-listas></listado-listas>
-      <!-- <button class="btn btn-primary" @click="createList()"> Nueva Lista </button> -->
+  <div class="container bg-light p-2">
+    <h1>Listas</h1>
+    <listado-listas></listado-listas>
   </div>
 </template>
 

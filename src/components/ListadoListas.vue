@@ -4,30 +4,26 @@
     <NuevaLista></NuevaLista>
     <div class="container mt-3">
         <div v-for="lista in orderBy(listas, 'createdOn') " :key="lista.id"
-            class="alert alert-primary alert-dismissible fade show"
-            >
-          <div class="d-flex justify-content-between" @click="navegarDetalle(lista.nombre)">
-              <div> 
-                {{lista.nombre}}
-              </div>
-            <div>
-              <button class="close" data-dismiss="alert"
-                        @click="borrar(lista.id)">
-                        <span aria-hidden="true">&times;</span>
-              </button>
-
+            class="alert alert-primary alert-dismissible fade show">
+            <div class="d-flex justify-content-between" @click="navegarDetalle(lista)"> 
+                  {{lista.nombre}}
             </div>
-          </div>
+            <button class="close"
+                          @click="borrarLista(lista)">
+                          <span aria-hidden="true">&times;</span>
+            </button>
         </div>
           
     </div>
+
+
   </div>
     
 </template>
 
 <script>
 import NuevaLista from './NuevaLista.vue'
-import {mapState} from 'vuex'
+import {mapState, mapActions} from 'vuex'
 import Vue2Filters from 'vue2-filters'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -39,45 +35,59 @@ export default {
   props: {
     title: 'Listas'
   },
-
-  data() {
-    return{
-      listas: [],
-
-    }
-  },
   components: {
     NuevaLista
   },
   mixins: [Vue2Filters.mixin],
   computed: {
-    ...mapState['db'],
+    ...mapState({
+      db: state => state.db,
+      listas: state => state.listas.listas
+    }),
     listasOrdenadas(){
       return _.orderBy(this.listas, 'createdOn');
     }
   },
   created () {
     this.$store.state.db.collection('listas').onSnapshot(elem => {
-        this.listas = []
+        this.vaciaListas();
+        // this.$store.dispatch('listas/vaciaListas')
         elem.docs.forEach(doc => {
-          this.listas.push({id: doc.id, ...doc.data()});
+          this.añadeLista({id: doc.id, ...doc.data()});
         });
     })
   },
   methods: {
-    borrar(idLista){
-      console.log("Borrar : " + idLista);
-      this.$store.state.db.collection('listas').doc(idLista).delete()
-      .then(function(){
-        console.log("Documento borrado: " + idLista);
-       })
-      .catch(function(error){
-        console.log("Error borrando documento: " + idLista );
-        console.log(error);
-      })
+    ...mapActions({
+      vaciaListas: 'listas/vaciaListas',
+      añadeLista: 'listas/añadeLista',
+      borraLista: 'listas/borraLista'
+    }),
+    borrarLista(lista){
+      this.$bvModal.msgBoxConfirm(lista.nombre, {
+          title: "Vas a borrar la lista y todas sus tareas",
+          size: 'md',
+          buttonSize: 'sm',
+          okVariant: 'danger',
+          okTitle: 'Confirmar',
+          cancelTitle: 'Cancelar',
+          footerClass: 'p-2',
+          hideHeaderClose: false,
+          centered: true
+        })
+          .then(opcion => {
+            if(opcion == true){
+              console.log("borro la lista " +lista.id + '  ' + lista.nombre);
+              this.borraLista(lista);
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          })
+
     },
-    navegarDetalle(listName){
-      this.$router.push({name:'details', params:{ listName } });
+    navegarDetalle(list){
+      this.$router.push({name:'details', params:{ list } });
     }
 
   }

@@ -1,13 +1,16 @@
 <template>
-    <div class="container">
+    <div class="container pepe">
         <div class="form-row">
-                <input type="text" class="form-control col-sm mb-2 mr-2" 
+            <div class="input-group mb-3 col-12">
+                <input type="text" class="form-control col-12 mb-1 col-md-11 mb-md-0 mr-sm-2" 
                 id="nuevaLista" 
                 placeholder="lista nueva a crear"
                 v-model="nuevaLista"
                 @keyup.enter="guardar">
-                
-                <button class="btn btn-primary col-xs-3 mb-2" @click="guardar" >Aceptar</button>
+                <!-- <div class="input-group-append col-xs-12"></div> -->
+                  <button class="btn btn-primary col-12 col-md-1" @click="guardar" >Aceptar</button>
+                <!-- </div> -->
+            </div>
         </div>
     </div>
 </template>
@@ -16,7 +19,7 @@
 
 
 // <script>
-import {mapState} from 'vuex';
+import {mapState, mapActions} from 'vuex';
 
 export default {
   name: 'nueva-lista',
@@ -32,15 +35,13 @@ export default {
   },
 
   methods:{
+      ...mapActions({
+        crearLista: 'listas/crearLista'
+      }),
       guardar(){
         if (this.nuevaLista != ""){
-          this.$store.state.db.collection('listas').add({nombre: this.nuevaLista, createdOn: new Date()})
-          .then(function(docRef) {
-              console.log("Document written with ID: ", docRef.id);
-          })
-          .catch(function(error) {
-              console.error("Error adding document: ", error);
-          });      
+          console.log("en guardar");
+          this.crearLista(this.nuevaLista);
 
           this.nuevaLista="";  
         }

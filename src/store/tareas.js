@@ -19,11 +19,16 @@ const mutations = {
         state.tareas[index].completed = !state.tareas[index].completed
     },
     cargaTareas(state, tareas){
-        state.tareas = tareas;
+        state.listas = listas;
     }
 }
 
 const actions = {
+
+    cargaTareas({commit, rootState}, tareas){
+        commit('cargaTareas', tareas);
+    },
+
     guardarTarea({commit, rootState}, tarea){
         console.log("TODO - Guardar tarea: " + tarea);
         

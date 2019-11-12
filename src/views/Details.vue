@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="container bg-light p-2">
-      <Tareas :title="listName"></Tareas>
+      <Tareas :lista="list"></Tareas>
     </div>
     
   </div>
@@ -24,8 +24,8 @@ export default {
    created () {
   },
   computed:{
-    listName(){
-      return this.$route.params.listName;
+    list(){
+      return this.$route.params.list;
     }
   }
 }
